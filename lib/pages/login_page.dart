@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tasks/ui/general/colors.dart';
+import 'package:tasks/ui/widgets/button_custom_widget.dart';
 import 'package:tasks/ui/widgets/button_normal_widget.dart';
 import 'package:tasks/ui/widgets/general.widgets.dart';
 import 'package:tasks/ui/widgets/textfield_normal_widget.dart';
@@ -51,7 +52,27 @@ class _LoginPageState extends State<LoginPage> {
                 controller: _passwordController,
               ),
               divider20(),
-              ButtonNormalWidget(onPressed: () {}),
+              ButtonCustomWidget(
+                text: "Iniciar Sesión",
+                icon: "check1",
+                color: kBrandPrimaryColor,
+              ),
+              divider20(),
+              Text(
+                "ó ingresa con tus redes sociales",
+              ),
+              divider20(),
+              ButtonCustomWidget(
+                text: "Iniciar sesion con Google",
+                icon: "google1",
+                color: Color(0xfff84b2a),
+              ),
+              divider20(),
+              ButtonCustomWidget(
+                text: "Facebook",
+                icon: "facebook",
+                color: Color(0xff507cc0),
+              ),
             ],
           ),
         ),
