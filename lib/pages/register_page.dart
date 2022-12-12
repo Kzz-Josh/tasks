@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tasks/ui/general/colors.dart';
@@ -17,6 +19,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
+
+  _registerUser() async {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: "mandarina3@gmail.com",
+      password: "123456",
+    );
+    print(userCredential);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +75,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 text: "Registrate ahora",
                 icon: "check1",
                 color: kBrandPrimaryColor,
+                onPressed: () {
+                  _registerUser();
+                },
               ),
             ],
           ),
