@@ -6,7 +6,6 @@ class MyServiceFirestore {
   MyServiceFirestore({required this.collection});
   late final CollectionReference _collectionReference =
       FirebaseFirestore.instance.collection(collection);
-  //add
 
   Future<String> addTask(TaskModel model) async {
     DocumentReference documentReference =
@@ -14,7 +13,12 @@ class MyServiceFirestore {
     String id = documentReference.id;
     return id;
   }
-  //delete
 
-  //update
+  Future<void> finishedTask(String taskId) async {
+    await _collectionReference.doc(taskId).update(
+      {
+        "status": false,
+      },
+    );
+  }
 }
