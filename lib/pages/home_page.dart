@@ -11,15 +11,20 @@ import 'package:tasks/ui/widgets/task_form_widget.dart';
 import 'package:tasks/ui/widgets/textfield_normal_widget.dart';
 
 class HomePage extends StatelessWidget {
+  final TextEditingController _searchController = TextEditingController();
   CollectionReference tasksReference =
       FirebaseFirestore.instance.collection('tasks');
 
   showTaskForm(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return TaskFormWidget();
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: TaskFormWidget(),
+        );
       },
     );
   }
@@ -98,6 +103,7 @@ class HomePage extends StatelessWidget {
                     ),
                     divider10(),
                     TextFieldNormalWidget(
+                      controller: _searchController,
                       icon: Icons.search,
                       hintText: "Buscar tarea...",
                     ),
