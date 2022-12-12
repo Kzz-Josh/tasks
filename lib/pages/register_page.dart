@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tasks/pages/register_page.dart';
 import 'package:tasks/ui/general/colors.dart';
 import 'package:tasks/ui/widgets/button_custom_widget.dart';
-import 'package:tasks/ui/widgets/button_normal_widget.dart';
 import 'package:tasks/ui/widgets/general.widgets.dart';
 import 'package:tasks/ui/widgets/textfield_normal_widget.dart';
 import 'package:tasks/ui/widgets/textfield_password_widget.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +33,21 @@ class _LoginPageState extends State<LoginPage> {
               ),
               divider30(),
               Text(
-                "Iniciar Sesión",
+                "Registrate",
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w600,
                   color: kBrandPrimaryColor,
                 ),
               ),
+              divider20(),
+              TextFieldNormalWidget(
+                hintText: "Nombre completo",
+                icon: Icons.email,
+                controller: _fullNameController,
+              ),
               divider10(),
+              divider6(),
               TextFieldNormalWidget(
                 hintText: "Correo Electronico",
                 icon: Icons.email,
@@ -54,52 +60,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
               divider20(),
               ButtonCustomWidget(
-                text: "Iniciar Sesión",
+                text: "Registrate ahora",
                 icon: "check1",
                 color: kBrandPrimaryColor,
               ),
-              divider20(),
-              Text(
-                "ó ingresa con tus redes sociales",
-              ),
-              divider20(),
-              ButtonCustomWidget(
-                text: "Iniciar sesion con Google",
-                icon: "google1",
-                color: Color(0xfff84b2a),
-              ),
-              divider20(),
-              ButtonCustomWidget(
-                text: "Facebook",
-                icon: "facebook",
-                color: Color(0xff507cc0),
-              ),
-              divider20(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Aun no estas regitrado? ",
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RegisterPage(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "Registrate",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: kBrandPrimaryColor,
-                      ),
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),
