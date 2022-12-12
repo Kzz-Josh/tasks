@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
 
   _login() async {
     try {
@@ -50,9 +51,20 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  _loginWithGoogle() {
-    GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
-    _googleSignIn.signIn();
+  _loginWithGoogle() async {
+    GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+
+    if (googleSignInAccount == null) {
+      return;
+    }
+    GoogleSignInAuthentication _googleSignInAuth =
+        await googleSignInAccount.authentication;
+    OAuthCredential credential = GoogleAuthProvider.credential(
+      idToken: _googleSignInAuth.idToken,
+      accessToken: _googleSignInAuth.accessToken,
+    );
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   @override
@@ -118,7 +130,9 @@ class _LoginPageState extends State<LoginPage> {
                   text: "Iniciar sesión con Facebook",
                   icon: "facebook",
                   color: Color(0xff507cc0),
-                  onPressed: () {},
+                  onPressed: () {
+                    _googleSignIn.signOut();
+                  },
                 ),
                 divider20(),
                 Row(
