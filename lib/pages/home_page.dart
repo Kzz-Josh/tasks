@@ -9,6 +9,7 @@ import 'package:tasks/ui/widgets/general.widgets.dart';
 import 'package:tasks/ui/widgets/item_task_widget.dart';
 import 'package:tasks/ui/widgets/task_form_widget.dart';
 import 'package:tasks/ui/widgets/textfield_normal_widget.dart';
+import 'package:tasks/utils/task_search_delegate.dart';
 
 class HomePage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
@@ -106,6 +107,12 @@ class HomePage extends StatelessWidget {
                       controller: _searchController,
                       icon: Icons.search,
                       hintText: "Buscar tarea...",
+                      onTap: () async {
+                        await showSearch(
+                          context: context,
+                          delegate: TaskSerchDelegate(),
+                        );
+                      },
                     ),
                   ],
                 ),
