@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/models/task_model.dart';
 import 'package:tasks/services/my_service_firestore.dart';
 import 'package:tasks/ui/general/colors.dart';
 import 'package:tasks/ui/widgets/button_normal_widget.dart';
@@ -57,7 +58,22 @@ class _TaskFormWidgetState extends State<TaskFormWidget> {
 
   registerTask() {
     if (formKey.currentState!.validate()) {
-      taskService.addTask();
+      TaskModel taskModel = TaskModel(
+        title: _titleController.text,
+        description: _descriptionController.text,
+        date: _dateController.text,
+        category: categorySelected,
+        status: true,
+      );
+      taskService.addTask(taskModel).then((value) {
+        if (value.isNotEmpty) {
+          Navigator.pop(context);
+          showSnackBarSuccess(context, "La tarea fue registrada con éxito.");
+        }
+      }).catchError((error) {
+        showSnackBarError(
+            context, "Hubo un inconveniente, intentalo nuevamente");
+      });
     }
   }
 
