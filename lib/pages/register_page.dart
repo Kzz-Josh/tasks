@@ -16,17 +16,28 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final keyForm = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
 
   _registerUser() async {
-    UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: "mandarina3@gmail.com",
-      password: "123456",
-    );
-    print(userCredential);
+    try {
+      if (keyForm.currentState!.validate()) {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+      }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == "weak.password") {
+        showSnackBarError(context, "La contraseña es muy debil");
+      } else if (error.code == "email-already-in-use") {
+        showSnackBarError(
+            context, "El correo electronico ya esta siendo usado");
+      }
+    }
   }
 
   @override
@@ -36,50 +47,53 @@ class _RegisterPageState extends State<RegisterPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              divider30(),
-              SvgPicture.asset(
-                'assets/images/login.svg',
-                height: 180.0,
-              ),
-              divider30(),
-              Text(
-                "Registrate",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600,
-                  color: kBrandPrimaryColor,
+          child: Form(
+            key: keyForm,
+            child: Column(
+              children: [
+                divider30(),
+                SvgPicture.asset(
+                  'assets/images/login.svg',
+                  height: 180.0,
                 ),
-              ),
-              divider20(),
-              TextFieldNormalWidget(
-                hintText: "Nombre completo",
-                icon: Icons.email,
-                controller: _fullNameController,
-              ),
-              divider10(),
-              divider6(),
-              TextFieldNormalWidget(
-                hintText: "Correo Electronico",
-                icon: Icons.email,
-                controller: _emailController,
-              ),
-              divider10(),
-              divider6(),
-              TextFieldPasswordWidget(
-                controller: _passwordController,
-              ),
-              divider20(),
-              ButtonCustomWidget(
-                text: "Registrate ahora",
-                icon: "check1",
-                color: kBrandPrimaryColor,
-                onPressed: () {
-                  _registerUser();
-                },
-              ),
-            ],
+                divider30(),
+                Text(
+                  "Registrate",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: kBrandPrimaryColor,
+                  ),
+                ),
+                divider20(),
+                TextFieldNormalWidget(
+                  hintText: "Nombre completo",
+                  icon: Icons.email,
+                  controller: _fullNameController,
+                ),
+                divider10(),
+                divider6(),
+                TextFieldNormalWidget(
+                  hintText: "Correo Electronico",
+                  icon: Icons.email,
+                  controller: _emailController,
+                ),
+                divider10(),
+                divider6(),
+                TextFieldPasswordWidget(
+                  controller: _passwordController,
+                ),
+                divider20(),
+                ButtonCustomWidget(
+                  text: "Registrate ahora",
+                  icon: "check1",
+                  color: kBrandPrimaryColor,
+                  onPressed: () {
+                    _registerUser();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
